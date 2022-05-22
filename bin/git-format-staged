@@ -1,0 +1,54 @@
+#!/usr/bin/env ruby
+require 'format-staged'
+require 'optparse'
+
+parameters = {
+  :update => true,
+  :write => true,
+  :verbose => false,
+}
+
+parser = OptionParser.new do |opt|
+  opt.banner = "Usage: #{opt.program_name} [options] [patterns]"
+  opt.separator ""
+  opt.on('-f', '--formatter COMMAND', 'Shell command to format files, will run once per file. Occurrences of the placeholder `{}` will be replaced with a path to the file being formatted. (Example: "prettier --stdin-filepath \'{}\'")') do |o|
+    parameters[:formatter] = o
+  end
+  
+  opt.on('--[no-]update-working-tree', 'By default formatting changes made to staged file content will also be applied to working tree files via a patch. This option disables that behavior, leaving working tree files untouched.') do |value|
+    parameters[:update] = value
+  end
+  
+  opt.on('--[no-]write', "Prevents #{opt.program_name} from modifying staged or working tree files. You can use this option to check staged changes with a linter instead of formatting. With this option stdout from the formatter command is ignored.") do |value|
+    parameters[:write] = value
+  end
+  
+  opt.on("-v", "--[no-]verbose", 'Shows commands being run') do |value| 
+    parameters[:verbose] = value
+  end
+
+  opt.separator ""
+  
+  opt.on_tail('-h', '--help', 'Prints this help') do
+    puts opt
+    exit
+  end
+  
+  opt.on_tail('--version', "Prints the version number and exits") do
+    puts FormatStaged::VERSION
+    exit
+  end
+end
+
+parser.parse!
+parameters[:patterns] = ARGV
+
+if !parameters[:formatter] or parameters[:patterns].empty?
+  puts "Missing formatter or file patterns!"
+  
+  puts parser
+  exit
+end
+
+formatter = FormatStaged.new(**parameters)
+formatter.run
