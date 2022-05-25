@@ -13,4 +13,6 @@ Gem::Specification.new do |s|
   s.executables << 'git-format-staged'
   s.homepage    = 'https://github.com/5sw/format-staged'
   s.license     = 'MIT'
+  
+  s.add_development_dependency 'rubocop', '~> 1.29'
 end
