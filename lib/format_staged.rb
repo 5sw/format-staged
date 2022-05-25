@@ -87,7 +87,7 @@ class FormatStaged
   end
 
   def patch_working_file(file, new_hash)
-    patch = get_output 'git', 'diff', file.dst_hash, new_hash, lines: false
+    patch = get_output 'git', 'diff', file.dst_hash, new_hash, lines: false, silent: true
     patch.gsub! "a/#{file.dst_hash}", "a/#{file.src_path}"
     patch.gsub! "b/#{new_hash}", "b/#{file.src_path}"
 
