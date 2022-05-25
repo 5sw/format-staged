@@ -1,0 +1,2 @@
+#!/bin/sh
+bundle exec git-format-staged -f "bundle exec rubocop -x -s {} --stderr"  "*.rb" --verbose
