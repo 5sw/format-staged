@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+require 'English'
 require 'format-staged/version'
 require 'format-staged/entry'
 require 'format-staged/io'
@@ -19,7 +22,7 @@ class FormatStaged
 
     files = get_output('git', 'diff-index', '--cached', '--diff-filter=AM', '--no-renames', 'HEAD')
             .map { |line| Entry.new(line, root: root) }
-            .reject { |entry| entry.symlink? }
+            .reject(&:symlink?)
             .filter { |entry| entry.matches?(@patterns) }
 
     files.each do |file|
@@ -64,7 +67,7 @@ class FormatStaged
     pid2, r = pipe_command format_command, source: r
     pid3, r = pipe_command 'git', 'hash-object', '-w', '--stdin', source: r
 
-    result = r.readlines.map { |it| it.chomp }
+    result = r.readlines.map(&:chomp)
     if @verbose
       result.each do |line|
         puts "< #{line}"
@@ -72,20 +75,20 @@ class FormatStaged
     end
 
     Process.wait pid1
-    raise "Cannot read #{file.dst_hash} from object database" unless $?.success?
+    raise "Cannot read #{file.dst_hash} from object database" unless $CHILD_STATUS.success?
 
     Process.wait pid2
-    raise "Error formatting #{file.src_path}" unless $?.success?
+    raise "Error formatting #{file.src_path}" unless $CHILD_STATUS.success?
 
     Process.wait pid3
-    raise 'Error writing formatted file back to object database' unless $?.success? && !result.empty?
+    raise 'Error writing formatted file back to object database' unless $CHILD_STATUS.success? && !result.empty?
 
     result.first
   end
 
   def object_is_empty(hash)
     size = get_output('git', 'cat-file', '-s', hash).first.to_i
-    size == 0
+    size.zero?
   end
 
   def patch_working_file(file, new_hash)
@@ -100,7 +103,7 @@ class FormatStaged
     patch_out.close
 
     Process.wait pid
-    raise 'Error applying patch' unless $?.success?
+    raise 'Error applying patch' unless $CHILD_STATUS.success?
   end
 
   def replace_file_in_index(file, new_hash)

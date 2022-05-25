@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
+
 require 'format-staged'
 require 'optparse'
 
@@ -46,7 +48,7 @@ end
 parser.parse!
 parameters[:patterns] = ARGV
 
-if !parameters[:formatter] or parameters[:patterns].empty?
+if !parameters[:formatter] || parameters[:patterns].empty?
   puts 'Missing formatter or file patterns!'
 
   puts parser

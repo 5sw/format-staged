@@ -1,22 +1,25 @@
+# frozen_string_literal: true
+
+require 'English'
 class FormatStaged
   def get_output(*args, lines: true)
-    puts '> ' + args.join(' ') if @verbose
+    puts "> #{args.join(' ')}" if @verbose
 
     output = IO.popen(args, err: :err) do |io|
       if lines
-        io.readlines.map { |l| l.chomp }
+        io.readlines.map(&:chomp)
       else
         io.read
       end
     end
 
-    if @verbose and lines
+    if @verbose && lines
       output.each do |line|
         puts "< #{line}"
       end
     end
 
-    raise 'Failed to run command' unless $?.success?
+    raise 'Failed to run command' unless $CHILD_STATUS.success?
 
     output
   end

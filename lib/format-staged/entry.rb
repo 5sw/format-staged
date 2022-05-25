@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class FormatStaged
   class Entry
-    PATTERN = /^:(?<src_mode>\d+) (?<dst_mode>\d+) (?<src_hash>[a-f0-9]+) (?<dst_hash>[a-f0-9]+) (?<status>[A-Z])(?<score>\d+)?\t(?<src_path>[^\t]+)(?:\t(?<dst_path>[^\t]+))?$/
+    PATTERN = /^:(?<src_mode>\d+) (?<dst_mode>\d+) (?<src_hash>[a-f0-9]+) (?<dst_hash>[a-f0-9]+) (?<status>[A-Z])(?<score>\d+)?\t(?<src_path>[^\t]+)(?:\t(?<dst_path>[^\t]+))?$/.freeze
 
     attr_reader :src_mode, :dst_mode, :src_hash, :dst_hash, :status, :score, :src_path, :dst_path, :path, :root
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'format-staged/version'
@@ -13,6 +15,7 @@ Gem::Specification.new do |s|
   s.executables << 'git-format-staged'
   s.homepage    = 'https://github.com/5sw/format-staged'
   s.license     = 'MIT'
+  s.required_ruby_version = '2.7'
 
   s.add_development_dependency 'rubocop', '~> 1.29'
 end
