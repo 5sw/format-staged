@@ -2,22 +2,11 @@
 
 require 'English'
 class FormatStaged
-  def get_output(*args, lines: true)
+  def get_output(*args, lines: true, silent: false)
     puts "> #{args.join(' ')}" if @verbose
 
-    output = IO.popen(args, err: :err) do |io|
-      if lines
-        io.readlines.map(&:chomp)
-      else
-        io.read
-      end
-    end
-
-    if @verbose && lines
-      output.each do |line|
-        puts "< #{line}"
-      end
-    end
+    r = IO.popen(args, err: :err)
+    output = read_output(r, lines: lines, silent: silent)
 
     raise 'Failed to run command' unless $CHILD_STATUS.success?
 
@@ -39,5 +28,18 @@ class FormatStaged
     source&.close
 
     [pid, r]
+  end
+
+  def read_output(r, lines: true, silent: false)
+    result = r.read
+    splits = result.split("\n")
+    if @verbose && !silent
+      splits.each do |line|
+        puts "< #{line}"
+      end
+    end
+    r.close
+
+    lines ? splits : result
   end
 end

@@ -67,12 +67,7 @@ class FormatStaged
     pid2, r = pipe_command format_command, source: r
     pid3, r = pipe_command 'git', 'hash-object', '-w', '--stdin', source: r
 
-    result = r.readlines.map(&:chomp)
-    if @verbose
-      result.each do |line|
-        puts "< #{line}"
-      end
-    end
+    result = read_output(r, lines: false).chomp
 
     Process.wait pid1
     raise "Cannot read #{file.dst_hash} from object database" unless $CHILD_STATUS.success?
@@ -83,7 +78,7 @@ class FormatStaged
     Process.wait pid3
     raise 'Error writing formatted file back to object database' unless $CHILD_STATUS.success? && !result.empty?
 
-    result.first
+    result
   end
 
   def object_is_empty(hash)
@@ -101,6 +96,8 @@ class FormatStaged
 
     patch_out.write patch
     patch_out.close
+
+    read_output r
 
     Process.wait pid
     raise 'Error applying patch' unless $CHILD_STATUS.success?
