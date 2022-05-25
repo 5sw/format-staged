@@ -6,6 +6,8 @@ require 'format-staged/entry'
 require 'format-staged/io'
 require 'shellwords'
 
+##
+# Runs staged changes through a formatting tool
 class FormatStaged
   attr_reader :formatter, :patterns, :update, :write, :verbose
 
