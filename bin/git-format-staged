@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'format-staged'
+require 'format_staged'
 require 'optparse'
 
 parameters = {
@@ -14,17 +14,31 @@ parser = OptionParser.new do |opt|
   opt.banner = "Usage: #{opt.program_name} [options] [patterns]"
   opt.separator ''
   opt.on('-f', '--formatter COMMAND',
-         'Shell command to format files, will run once per file. Occurrences of the placeholder `{}` will be replaced with a path to the file being formatted. (Example: "prettier --stdin-filepath \'{}\'")') do |o|
+         <<~DOC
+           Shell command to format files, will run once per file. Occurrences of the placeholder `{}` will \
+           be replaced with a path to the file being formatted. \
+           (Example: "prettier --stdin-filepath \'{}\'")
+         DOC
+  ) do |o|
     parameters[:formatter] = o
   end
 
   opt.on('--[no-]update-working-tree',
-         'By default formatting changes made to staged file content will also be applied to working tree files via a patch. This option disables that behavior, leaving working tree files untouched.') do |value|
+         <<~DOC
+           By default formatting changes made to staged file content will also be applied to working tree \
+           files via a patch. This option disables that behavior, leaving working tree files untouched.#{' '}
+         DOC
+        ) do |value|
     parameters[:update] = value
   end
 
   opt.on('--[no-]write',
-         "Prevents #{opt.program_name} from modifying staged or working tree files. You can use this option to check staged changes with a linter instead of formatting. With this option stdout from the formatter command is ignored.") do |value|
+         <<~DOC
+           "Prevents #{opt.program_name} from modifying staged or working tree files. You can use this option \
+           to check staged changes with a linter instead of formatting. With this option stdout from the \
+           formatter command is ignored."
+         DOC
+        ) do |value|
     parameters[:write] = value
   end
 

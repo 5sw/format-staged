@@ -2,7 +2,15 @@
 
 class FormatStaged
   class Entry
-    PATTERN = /^:(?<src_mode>\d+) (?<dst_mode>\d+) (?<src_hash>[a-f0-9]+) (?<dst_hash>[a-f0-9]+) (?<status>[A-Z])(?<score>\d+)?\t(?<src_path>[^\t]+)(?:\t(?<dst_path>[^\t]+))?$/.freeze
+    PATTERN = /^
+      :(?<src_mode>\d+)\s
+      (?<dst_mode>\d+)\s
+      (?<src_hash>[a-f0-9]+)\s
+      (?<dst_hash>[a-f0-9]+)\s
+      (?<status>[A-Z])(?<score>\d+)?\t
+      (?<src_path>[^\t]+)
+      (?:\t(?<dst_path>[^\t]+))?
+      $/x.freeze
 
     attr_reader :src_mode, :dst_mode, :src_hash, :dst_hash, :status, :score, :src_path, :dst_path, :path, :root
 
