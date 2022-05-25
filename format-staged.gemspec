@@ -15,9 +15,11 @@ Gem::Specification.new do |s|
   s.executables << 'git-format-staged'
   s.homepage    = 'https://github.com/5sw/format-staged'
   s.license     = 'MIT'
-  s.required_ruby_version = '2.7'
+  s.required_ruby_version = '~> 2.7'
 
+  s.add_development_dependency 'rake', '~> 13.0'
   s.add_development_dependency 'rubocop', '~> 1.29'
+  s.add_development_dependency 'rubocop-rake', '~> 0.6'
 
   s.metadata = {
     'rubygems_mfa_required' => 'true'
