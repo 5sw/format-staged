@@ -19,7 +19,7 @@ class FormatStaged
     @write = write
     @verbose = verbose
 
-    String.disable_colorization = !(color_output || STDOUT.isatty)
+    String.disable_colorization = !(color_output || $stdout.isatty)
   end
 
   def run
