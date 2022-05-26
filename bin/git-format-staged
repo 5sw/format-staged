@@ -57,7 +57,7 @@ parser = OptionParser.new do |opt|
     puts FormatStaged::VERSION
     exit
   end
-  
+
   opt.on('--[no-]color', 'Colorizes output') do |value|
     parameters[:color_output] = value
   end

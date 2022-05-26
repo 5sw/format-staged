@@ -31,15 +31,15 @@ class FormatStaged
     [pid, r]
   end
 
-  def read_output(r, lines: true, silent: false)
-    result = r.read
+  def read_output(output, lines: true, silent: false)
+    result = output.read
     splits = result.split("\n")
     if @verbose && !silent
       splits.each do |line|
         puts "< #{line}"
       end
     end
-    r.close
+    output.close
 
     lines ? splits : result
   end
