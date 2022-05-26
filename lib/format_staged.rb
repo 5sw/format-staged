@@ -5,18 +5,21 @@ require 'format-staged/version'
 require 'format-staged/entry'
 require 'format-staged/io'
 require 'shellwords'
+require 'colorize'
 
 ##
 # Runs staged changes through a formatting tool
 class FormatStaged
   attr_reader :formatter, :patterns, :update, :write, :verbose
 
-  def initialize(formatter:, patterns:, update: true, write: true, verbose: true)
+  def initialize(formatter:, patterns:, update: true, write: true, verbose: true, color_output: nil)
     @formatter = formatter
     @patterns = patterns
     @update = update
     @write = write
     @verbose = verbose
+
+    String.disable_colorization = !(color_output || STDOUT.isatty)
   end
 
   def run

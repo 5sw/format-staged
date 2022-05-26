@@ -16,6 +16,8 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/5sw/format-staged'
   s.license     = 'MIT'
   s.required_ruby_version = '~> 2.7'
+  
+  s.add_dependency 'colorize'
 
   s.add_development_dependency 'rake', '~> 13.0'
   s.add_development_dependency 'rubocop', '~> 1.29'

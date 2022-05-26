@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'English'
+
 class FormatStaged
   def get_output(*args, lines: true, silent: false)
     puts "> #{args.join(' ')}" if @verbose
