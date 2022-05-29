@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'English'
+
 class FormatStaged
   def get_output(*args, lines: true, silent: false)
     puts "> #{args.join(' ')}" if @verbose
@@ -30,16 +31,32 @@ class FormatStaged
     [pid, r]
   end
 
-  def read_output(r, lines: true, silent: false)
-    result = r.read
+  def read_output(output, lines: true, silent: false)
+    result = output.read
     splits = result.split("\n")
     if @verbose && !silent
       splits.each do |line|
         puts "< #{line}"
       end
     end
-    r.close
+    output.close
 
     lines ? splits : result
+  end
+
+  def fail!(message)
+    abort "💣  #{message.red}"
+  end
+
+  def warning(message)
+    warn "⚠️  #{message.yellow}"
+  end
+
+  def info(message)
+    puts message.blue
+  end
+
+  def verbose_info(message)
+    puts "ℹ️  #{message}" if verbose
   end
 end

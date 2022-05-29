@@ -5,21 +5,29 @@ require 'format-staged/version'
 require 'format-staged/entry'
 require 'format-staged/io'
 require 'shellwords'
+require 'colorize'
 
+##
+# Runs staged changes through a formatting tool
 class FormatStaged
   attr_reader :formatter, :patterns, :update, :write, :verbose
 
-  def initialize(formatter:, patterns:, update: true, write: true, verbose: true)
+  def initialize(formatter:, patterns:, update: true, write: true, verbose: true, color_output: nil)
     @formatter = formatter
     @patterns = patterns
     @update = update
     @write = write
     @verbose = verbose
+
+    String.disable_colorization = !(color_output || $stdout.isatty)
   end
 
   def run
-    root = get_output('git', 'rev-parse', '--show-toplevel').first
+    verbose_info "Finding repository root"
+    root = get_output('git', 'rev-parse', '--show-toplevel', lines: false).chomp
+    verbose_info "Repo at #{root}"
 
+    verbose_info "Listing staged files"
     files = get_output('git', 'diff-index', '--cached', '--diff-filter=AM', '--no-renames', 'HEAD')
             .map { |line| Entry.new(line, root: root) }
             .reject(&:symlink?)
@@ -36,12 +44,12 @@ class FormatStaged
     return true unless write
 
     if new_hash == file.dst_hash
-      puts "Unchanged #{file.src_path}"
+      info "Unchanged #{file.src_path}"
       return false
     end
 
     if object_is_empty new_hash
-      puts "Skipping #{file.src_path}, formatted file is empty"
+      info "Skipping #{file.src_path}, formatted file is empty"
       return false
     end
 
@@ -51,7 +59,7 @@ class FormatStaged
       begin
         patch_working_file file, new_hash
       rescue StandardError => e
-        puts "Warning: failed updating #{file.src_path} in working copy: #{e}"
+        warning "failed updating #{file.src_path} in working copy: #{e}"
       end
     end
 
@@ -59,7 +67,7 @@ class FormatStaged
   end
 
   def format_object(file)
-    puts "Formatting #{file.src_path}"
+    info "Formatting #{file.src_path}"
 
     format_command = formatter.sub('{}', file.src_path.shellescape)
 
@@ -87,6 +95,8 @@ class FormatStaged
   end
 
   def patch_working_file(file, new_hash)
+    info "Updating working copy"
+
     patch = get_output 'git', 'diff', file.dst_hash, new_hash, lines: false, silent: true
     patch.gsub! "a/#{file.dst_hash}", "a/#{file.src_path}"
     patch.gsub! "b/#{new_hash}", "b/#{file.src_path}"

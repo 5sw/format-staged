@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class FormatStaged
+  ##
+  # Entry in the git index.
+  #
+  # Data as produced by `git diff-index`
   class Entry
     PATTERN = /^
       :(?<src_mode>\d+)\s

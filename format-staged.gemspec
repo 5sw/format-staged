@@ -17,6 +17,8 @@ Gem::Specification.new do |s|
   s.license     = 'MIT'
   s.required_ruby_version = '~> 2.7'
 
+  s.add_dependency 'colorize'
+
   s.add_development_dependency 'rake', '~> 13.0'
   s.add_development_dependency 'rubocop', '~> 1.29'
   s.add_development_dependency 'rubocop-rake', '~> 0.6'
