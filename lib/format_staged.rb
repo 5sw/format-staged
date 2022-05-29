@@ -61,16 +61,19 @@ class FormatStaged
     end
 
     replace_file_in_index file, new_hash
-
-    if update
-      begin
-        patch_working_file file, new_hash
-      rescue StandardError => e
-        warning "failed updating #{file.src_path} in working copy: #{e}"
-      end
-    end
+    update_working_copy file, new_hash
 
     true
+  end
+
+  def update_working_copy(file, new_hash)
+    return unless update
+
+    begin
+      patch_working_file file, new_hash
+    rescue StandardError => e
+      warning "failed updating #{file.src_path} in working copy: #{e}"
+    end
   end
 
   def format_object(file)
