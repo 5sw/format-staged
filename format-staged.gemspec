@@ -20,9 +20,10 @@ Gem::Specification.new do |s|
   s.add_dependency 'colorize'
 
   s.add_development_dependency 'rake', '~> 13.0'
+  s.add_development_dependency 'rspec'
   s.add_development_dependency 'rubocop', '~> 1.29'
   s.add_development_dependency 'rubocop-rake', '~> 0.6'
-  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'rubocop-rspec'
 
   s.metadata = {
     'rubygems_mfa_required' => 'true'
