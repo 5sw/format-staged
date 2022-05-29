@@ -23,19 +23,26 @@ class FormatStaged
   end
 
   def run
-    verbose_info "Finding repository root"
+    matching_files(repo_root).each do |file|
+      format_file(file)
+    end
+  end
+
+  def repo_root
+    verbose_info 'Finding repository root'
     root = get_output('git', 'rev-parse', '--show-toplevel', lines: false).chomp
     verbose_info "Repo at #{root}"
 
-    verbose_info "Listing staged files"
-    files = get_output('git', 'diff-index', '--cached', '--diff-filter=AM', '--no-renames', 'HEAD')
-            .map { |line| Entry.new(line, root: root) }
-            .reject(&:symlink?)
-            .filter { |entry| entry.matches?(@patterns) }
+    root
+  end
 
-    files.each do |file|
-      format_file(file)
-    end
+  def matching_files(root)
+    verbose_info 'Listing staged files'
+
+    get_output('git', 'diff-index', '--cached', '--diff-filter=AM', '--no-renames', 'HEAD')
+      .map { |line| Entry.new(line, root: root) }
+      .reject(&:symlink?)
+      .filter { |entry| entry.matches?(@patterns) }
   end
 
   def format_file(file)
