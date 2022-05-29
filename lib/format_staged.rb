@@ -24,7 +24,7 @@ class FormatStaged
 
   def run
     verbose_info "Finding repository root"
-    root = get_output('git', 'rev-parse', '--show-toplevel').first
+    root = get_output('git', 'rev-parse', '--show-toplevel', lines: false).chomp
     verbose_info "Repo at #{root}"
 
     verbose_info "Listing staged files"
