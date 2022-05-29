@@ -73,5 +73,4 @@ if !parameters[:formatter] || parameters[:patterns].empty?
   exit
 end
 
-formatter = FormatStaged.new(**parameters)
-formatter.run
+FormatStaged.run(**parameters)

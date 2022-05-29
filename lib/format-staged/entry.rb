@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class FormatStaged
+module FormatStaged
   ##
   # Entry in the git index.
   #

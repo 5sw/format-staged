@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-class FormatStaged
+module FormatStaged
   VERSION = '0.0.3'
 end
