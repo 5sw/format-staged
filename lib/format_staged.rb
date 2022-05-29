@@ -12,14 +12,14 @@ require 'colorize'
 class FormatStaged
   attr_reader :formatter, :patterns, :update, :write, :verbose
 
-  def initialize(formatter:, patterns:, update: true, write: true, verbose: true, color_output: nil)
+  def initialize(formatter:, patterns:, **options)
     @formatter = formatter
     @patterns = patterns
-    @update = update
-    @write = write
-    @verbose = verbose
+    @update = options.fetch(:update, true)
+    @write = options.fetch(:write, true)
+    @verbose = options.fetch(:verbose, true)
 
-    String.disable_colorization = !(color_output || $stdout.isatty)
+    String.disable_colorization = !options.fetch(:color_output, $stdout.isatty)
   end
 
   def run
