@@ -3,3 +3,11 @@ AllCops:
     TargetRubyVersion: 2.7
     Exclude:
         - "vendor/**/*"
+
+Metrics/MethodLength:
+    Max: 15
+
+Metrics/BlockLength:
+    Exclude:
+        - bin/git-format-staged  # Long block for option parser is ok
+        
