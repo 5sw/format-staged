@@ -13,6 +13,8 @@ class FormatStaged
   attr_reader :formatter, :patterns, :update, :write, :verbose
 
   def initialize(formatter:, patterns:, **options)
+    validate_patterns patterns
+
     @formatter = formatter
     @patterns = patterns
     @update = options.fetch(:update, true)
@@ -125,5 +127,11 @@ class FormatStaged
 
   def replace_file_in_index(file, new_hash)
     get_output 'git', 'update-index', '--cacheinfo', "#{file.dst_mode},#{new_hash},#{file.src_path}"
+  end
+
+  def validate_patterns(patterns)
+    patterns.each do |pattern|
+      fail! "Negative pattern '#{pattern}' is not yet supported" if pattern.start_with? '!'
+    end
   end
 end
