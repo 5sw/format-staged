@@ -21,3 +21,6 @@ RuboCop::RakeTask.new(:lint_github) do |t|
   t.formatters << 'CodeScanning::SarifFormatter'
   t.options << '-o' << 'rubocop.sarif'
 end
+
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec)
