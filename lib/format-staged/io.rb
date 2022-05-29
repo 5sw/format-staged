@@ -43,4 +43,20 @@ class FormatStaged
 
     lines ? splits : result
   end
+
+  def fail!(message)
+    abort "💣  #{message.red}"
+  end
+
+  def warning(message)
+    warn "⚠️  #{message.yellow}"
+  end
+
+  def info(message)
+    puts message.blue
+  end
+
+  def verbose_info(message)
+    puts "ℹ️  #{message}" if verbose
+  end
 end

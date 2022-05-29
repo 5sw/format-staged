@@ -23,8 +23,11 @@ class FormatStaged
   end
 
   def run
+    verbose_info "Finding repository root"
     root = get_output('git', 'rev-parse', '--show-toplevel').first
+    verbose_info "Repo at #{root}"
 
+    verbose_info "Listing staged files"
     files = get_output('git', 'diff-index', '--cached', '--diff-filter=AM', '--no-renames', 'HEAD')
             .map { |line| Entry.new(line, root: root) }
             .reject(&:symlink?)
@@ -41,12 +44,12 @@ class FormatStaged
     return true unless write
 
     if new_hash == file.dst_hash
-      puts "Unchanged #{file.src_path}"
+      info "Unchanged #{file.src_path}"
       return false
     end
 
     if object_is_empty new_hash
-      puts "Skipping #{file.src_path}, formatted file is empty"
+      info "Skipping #{file.src_path}, formatted file is empty"
       return false
     end
 
@@ -56,7 +59,7 @@ class FormatStaged
       begin
         patch_working_file file, new_hash
       rescue StandardError => e
-        puts "Warning: failed updating #{file.src_path} in working copy: #{e}"
+        warning "failed updating #{file.src_path} in working copy: #{e}"
       end
     end
 
@@ -64,7 +67,7 @@ class FormatStaged
   end
 
   def format_object(file)
-    puts "Formatting #{file.src_path}"
+    info "Formatting #{file.src_path}"
 
     format_command = formatter.sub('{}', file.src_path.shellescape)
 
