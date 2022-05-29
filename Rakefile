@@ -14,3 +14,10 @@ require 'rubocop/rake_task'
 
 desc 'Run RuboCop'
 RuboCop::RakeTask.new(:lint)
+
+desc 'Run RuboCop for GitHub'
+RuboCop::RakeTask.new(:lint_github) do |t|
+  t.requires << 'code_scanning'
+  t.formatters << 'CodeScanning::SarifFormatter'
+  t.options << '-o' << 'rubocop.sarif'
+end

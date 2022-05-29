@@ -25,8 +25,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # If running on a self-hosted runner, check it meets the requirements
-    # listed at https://github.com/ruby/setup-ruby#using-self-hosted-runners
     - name: Set up Ruby
       uses: ruby/setup-ruby@f20f1eae726df008313d2e0d78c5e602562a1bcf
       with:
@@ -38,7 +36,7 @@ jobs:
     - name: Rubocop run
       run: |
         bash -c "
-          bundle exec rubocop --require code_scanning --format CodeScanning::SarifFormatter -o rubocop.sarif
+          bundle exec rake lint_github
           [[ $? -ne 2 ]]
         "
 
