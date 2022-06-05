@@ -16,6 +16,9 @@ module Git
       @path = Dir.mktmpdir
 
       git 'init'
+      git 'branch', '-m', 'main'
+      git 'config', 'user.name', 'Test User'
+      git 'config', 'user.email', 'test@example.com'
     end
 
     def file_in_tree(name, content)
