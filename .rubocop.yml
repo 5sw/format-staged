@@ -10,4 +10,4 @@ Metrics/MethodLength:
 Metrics/BlockLength:
     Exclude:
         - bin/git-format-staged  # Long block for option parser is ok
-        
+        - spec/**/*.rb

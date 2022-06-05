@@ -31,6 +31,14 @@ module Git
       File.write absolute, content.end_with?("\n") ? content : "#{content}\n"
     end
 
+    def get_content(name)
+      File.read(Pathname.new(path) + name).chomp
+    end
+
+    def get_staged(name)
+      git 'show', ":#{name}"
+    end
+
     def stage(file)
       git 'add', file
     end
@@ -61,6 +69,12 @@ module Git
 
     def in_repo(&block)
       Dir.chdir path, &block
+    end
+
+    def run_formatter
+      in_repo do
+        FormatStaged.run formatter: "#{__dir__}/test_hook.rb {}", patterns: ['*.test']
+      end
     end
   end
 
