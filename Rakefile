@@ -24,3 +24,7 @@ end
 
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:spec)
+
+RSpec::Core::RakeTask.new(:spec_github) do |t|
+  t.rspec_opts = '--format RspecJunitFormatter --out rspec.xml'
+end
