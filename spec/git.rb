@@ -15,8 +15,7 @@ module Git
     def initialize
       @path = Dir.mktmpdir
 
-      git 'init'
-      git 'branch', '-m', 'main'
+      git 'init', '-b', 'main'
       git 'config', 'user.name', 'Test User'
       git 'config', 'user.email', 'test@example.com'
     end
