@@ -73,5 +73,10 @@ if !parameters[:formatter] || parameters[:patterns].empty?
   exit
 end
 
-success = FormatStaged.run(**parameters)
-exit success ? 0 : 1
+begin
+  success = FormatStaged.run(**parameters)
+  exit success ? 0 : 1
+rescue RuntimeError => e
+  puts "💣 Error: #{e.message}".red
+  exit 1
+end
