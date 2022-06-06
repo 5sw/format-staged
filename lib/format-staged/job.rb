@@ -28,9 +28,15 @@ module FormatStaged
     end
 
     def run
-      matching_files(repo_root).each do |file|
-        format_file(file)
+      files = matching_files(repo_root)
+      if files.empty?
+        info 'No staged file matching pattern. Done'
+        return true
       end
+
+      formatted = files.filter { |file| format_file file }
+
+      !formatted.empty?
     end
 
     def repo_root
@@ -57,7 +63,7 @@ module FormatStaged
 
       if new_hash == file.dst_hash
         info "Unchanged #{file.src_path}"
-        return false
+        return true
       end
 
       if object_is_empty new_hash
@@ -67,6 +73,11 @@ module FormatStaged
 
       replace_file_in_index file, new_hash
       update_working_copy file, new_hash
+
+      if new_hash == file.src_hash
+        info "File #{file.src_path} equal to comitted"
+        return false
+      end
 
       true
     end

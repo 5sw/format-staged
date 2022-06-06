@@ -6,5 +6,5 @@ gemspec
 
 group :ci do
   gem 'code-scanning-rubocop'
-  gem "rspec_junit_formatter"
+  gem 'rspec_junit_formatter'
 end
