@@ -14,6 +14,10 @@ describe 'Test Hook' do
     expect(out).to eq ''
   end
 
+  it 'fails with a #fail line' do
+    expect { run '#fail' }.to raise_error
+  end
+
   def run(input)
     result = IO.popen ['ruby', "#{__dir__}/test_hook.rb"], mode: File::RDWR do |io|
       io.write input
