@@ -119,4 +119,10 @@ describe FormatStaged do
     expect(repo.get_content('test.test')).to eq('#clear')
     expect(repo.get_content('other.test')).to eq('a = b')
   end
+
+  it 'fails if the hook returns a nonzero status' do
+    repo.set_content 'test.test', '#fail'
+    repo.stage 'test.test'
+    expect { repo.run_formatter }.to raise_error
+  end
 end
