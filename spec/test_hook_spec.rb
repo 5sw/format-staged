@@ -15,7 +15,9 @@ describe 'Test Hook' do
   end
 
   it 'fails with a #fail line' do
-    expect { run '#fail' }.to raise_error
+    expect { run '#fail' }.to raise_error(RuntimeError) { |error|
+      expect(error.message).to eq('Cannot run test_hook.rb')
+    }
   end
 
   def run(input)

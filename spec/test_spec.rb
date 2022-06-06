@@ -123,7 +123,9 @@ describe FormatStaged do
   it 'fails if the hook returns a nonzero status' do
     repo.set_content 'test.test', '#fail'
     repo.stage 'test.test'
-    expect { repo.run_formatter }.to raise_error
+    expect { repo.run_formatter }.to raise_error(RuntimeError) { |error|
+      expect(error.message).to eq 'Error formatting test.test'
+    }
   end
 
   it 'leaves files alone when write is false' do
