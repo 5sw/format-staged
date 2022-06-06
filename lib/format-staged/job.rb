@@ -102,7 +102,9 @@ module FormatStaged
 
       pid1, r = pipe_command 'git', 'cat-file', '-p', file.dst_hash
       pid2, r = pipe_command format_command, source: r
-      pid3, r = pipe_command 'git', 'hash-object', '-w', '--stdin', source: r
+
+      write_args = write ? ['-w'] : []
+      pid3, r = pipe_command 'git', 'hash-object', *write_args, '--stdin', source: r
 
       result = read_output(r, lines: false).chomp
 
