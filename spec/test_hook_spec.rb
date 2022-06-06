@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'English'
+
 describe 'Test Hook' do
   it 'adds spaces around =' do
     out = run 'a=b'
@@ -13,10 +15,14 @@ describe 'Test Hook' do
   end
 
   def run(input)
-    IO.popen ['ruby', "#{__dir__}/test_hook.rb"], mode: File::RDWR do |io|
+    result = IO.popen ['ruby', "#{__dir__}/test_hook.rb"], mode: File::RDWR do |io|
       io.write input
       io.close_write
       io.read.chomp
     end
+
+    raise 'Cannot run test_hook.rb' unless $CHILD_STATUS.success?
+
+    result
   end
 end
