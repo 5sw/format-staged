@@ -73,9 +73,9 @@ module Git
       Dir.chdir path, &block
     end
 
-    def run_formatter
+    def run_formatter(**arguments)
       in_repo do
-        FormatStaged.run formatter: "#{__dir__}/test_hook.rb {}", patterns: ['*.test']
+        FormatStaged.run(**arguments, formatter: "#{__dir__}/test_hook.rb {}", patterns: ['*.test'])
       end
     end
   end
