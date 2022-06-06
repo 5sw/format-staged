@@ -125,4 +125,13 @@ describe FormatStaged do
     repo.stage 'test.test'
     expect { repo.run_formatter }.to raise_error
   end
+
+  it 'leaves files alone when write is false' do
+    repo.set_content 'test.test', 'a=b'
+    repo.stage 'test.test'
+
+    expect(repo.run_formatter write: false).to be_truthy
+    expect(repo.get_content('test.test')).to eq 'a=b'
+    expect(repo.get_staged('test.test')).to eq 'a=b'
+  end
 end
