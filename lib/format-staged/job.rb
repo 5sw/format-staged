@@ -36,7 +36,10 @@ module FormatStaged
 
       formatted = files.filter { |file| format_file file }
 
-      !formatted.empty?
+      return false unless formatted.size == files.size
+
+      quiet = @verbose ? [] : ['--quiet']
+      return get_status('git', 'diff-index', '--cached', '--exit-code', *quiet, 'HEAD') != 0
     end
 
     def repo_root
@@ -76,7 +79,7 @@ module FormatStaged
 
       if new_hash == file.src_hash
         info "File #{file.src_path} equal to comitted"
-        return false
+        return true
       end
 
       true

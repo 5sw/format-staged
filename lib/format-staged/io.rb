@@ -17,6 +17,17 @@ module FormatStaged
       output
     end
 
+    def get_status(*args)
+      puts "> #{args.join(' ')}" if @verbose
+      result = system(*args)
+
+      raise 'Failed to run command' if result.nil?
+
+      puts "? #{$CHILD_STATUS.exitstatus}" if @verbose
+
+      $CHILD_STATUS.exitstatus
+    end
+
     def pipe_command(*args, source: nil)
       puts (source.nil? ? '> ' : '| ') + args.join(' ') if @verbose
       r, w = IO.pipe
