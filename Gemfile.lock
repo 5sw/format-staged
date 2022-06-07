@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    format-staged (0.1.0)
+    format-staged (0.1.1)
       colorize
 
 GEM
