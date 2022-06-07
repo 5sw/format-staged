@@ -94,3 +94,16 @@ must read file content via `stdin`. Anything that the lint command outputs to
 option to tell it to read content from `stdin` instead of reading files from
 disk, and messages from `eslint` are redirected to `stderr` (using the `>&2`
 notation) so that you can see them.
+
+### Why the Ruby port if there already is a fine Python implementation?
+
+I don’t like Python ;)
+
+But jokes aside, I am already setting up a Ruby environment (using [rbenv][]) for my 
+projects to run [cocoapods][] and [fastlane][] and our git hooks. By using this port
+we don’t need to ensure to have python available as well.
+
+
+[rbenv]: https://github.com/rbenv/rbenv/
+[cocoapods]: https://cocoapods.org/
+[fastlane]: https://fastlane.tools/
