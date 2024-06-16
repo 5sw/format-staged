@@ -17,7 +17,7 @@ parser = OptionParser.new do |opt|
          <<~DOC
            Shell command to format files, will run once per file. Occurrences of the placeholder `{}` will \
            be replaced with a path to the file being formatted. \
-           (Example: "prettier --stdin-filepath \'{}\'")
+           (Example: "prettier --stdin-filepath '{}'")
          DOC
   ) do |o|
     parameters[:formatter] = o
