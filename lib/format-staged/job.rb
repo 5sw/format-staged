@@ -39,7 +39,7 @@ module FormatStaged
       return false unless formatted.size == files.size
 
       quiet = @verbose ? [] : ['--quiet']
-      return !write || get_status('git', 'diff-index', '--cached', '--exit-code', *quiet, 'HEAD') != 0
+      !write || get_status('git', 'diff-index', '--cached', '--exit-code', *quiet, 'HEAD') != 0
     end
 
     def repo_root
